@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const dotenv = require('dotenv');
+const rateLimit = require('express-rate-limit');
 
 dotenv.config();
 
@@ -22,6 +23,19 @@ app.use(cors({
     credentials: true
 }));
 app.use(helmet());
+
+const limiter = rateLimit({
+    window: 15 * 60 * 1000,
+    limit: 100,
+    message: {
+        error: 'too many request from this IP, please try again later',
+        retryAfter: '15 minutes'
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+app.use(limiter);
+
 
 app.listen(PORT, () => {
     console.log(PORT, `Server is running on port: ${PORT}`);
