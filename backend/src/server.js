@@ -9,6 +9,7 @@ dotenv.config();
 
 
 const logger = require('./utils/logger');
+const errorHandler = require('./middleware/errorHandler.middleware');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -65,6 +66,8 @@ app.get('/', (req, res) => {
 app.use((req, res, next) => {
     res.status(404).send({ message: 'The page you are looking for is not found!' });
 });
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
     console.log(PORT, `Server is running on port: ${PORT}`);
