@@ -3,11 +3,14 @@ const cors = require('cors');
 const helmet = require('helmet');
 const dotenv = require('dotenv');
 const rateLimit = require('express-rate-limit');
-
+const morgan = require('morgan');
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
+
 const app = express();
+app.use(morgan(':date[clf] :remote-addr :method :url :status :res[content-length] - :response-time ms'));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const whiteList = process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3000'];
@@ -35,6 +38,10 @@ const limiter = rateLimit({
     legacyHeaders: false,
 });
 app.use(limiter);
+
+app.get('/', (req, res) => {
+    res.json({ message: 'Hello !' });
+});
 
 app.use((req, res, next) => {
     res.status(404).send({ message: 'The page you are looking for is not found!' });
