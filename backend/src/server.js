@@ -26,7 +26,7 @@ app.use(helmet());
 
 const limiter = rateLimit({
     window: 15 * 60 * 1000,
-    limit: 100,
+    max: 100,
     message: {
         error: 'too many request from this IP, please try again later',
         retryAfter: '15 minutes'
@@ -36,6 +36,9 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
+app.use((req, res, next) => {
+    res.status(404).send({ message: 'The page you are looking for is not found!' });
+});
 
 app.listen(PORT, () => {
     console.log(PORT, `Server is running on port: ${PORT}`);
