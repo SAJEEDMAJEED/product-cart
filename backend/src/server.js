@@ -4,14 +4,18 @@ const helmet = require('helmet');
 const dotenv = require('dotenv');
 const rateLimit = require('express-rate-limit');
 const morgan = require('morgan');
+const compression = require('compression');
 dotenv.config();
 
 
 const logger = require('./utils/logger');
 
+const app = express();
 const PORT = process.env.PORT || 5000;
 
-const app = express();
+// Trust proxy for rate limiting behind reverse proxy
+app.set('trust proxy', 1);
+
 app.use(morgan(':date[clf] :remote-addr :method :url :status :res[content-length] - :response-time ms'));
 
 const whiteList = process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3000'];
@@ -39,10 +43,19 @@ const limiter = rateLimit({
     legacyHeaders: false,
 });
 app.use(limiter);
+app.use(compression({ filter: shouldCompress }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 if (process.env.NODE_ENV !== 'test') {
     app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
+}
+function shouldCompress(req, res) {
+    // Bypass compression if request came from NGINX
+    if (req.headers['x-no-compression']) {
+        return false;
+    }
+    return compression.filter(req, res);
 }
 
 app.get('/', (req, res) => {
