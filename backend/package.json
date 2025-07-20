@@ -15,7 +15,8 @@
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
-    "morgan": "^1.10.1"
+    "morgan": "^1.10.1",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
