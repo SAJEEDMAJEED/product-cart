@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const rateLimit = require('express-rate-limit');
 const morgan = require('morgan');
 const compression = require('compression');
+const indexRouter = require('./routes/index');
 dotenv.config();
 
 
@@ -60,9 +61,7 @@ function shouldCompress(req, res) {
     return compression.filter(req, res);
 }
 
-app.get('/', (req, res) => {
-    res.json({ message: 'Hello !' });
-});
+app.use(`/${process.env.API_VERSION}/`, indexRouter);
 
 app.use((req, res, next) => {
     res.status(404).send({ message: 'The page you are looking for is not found!' });
