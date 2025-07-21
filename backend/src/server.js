@@ -10,6 +10,7 @@ dotenv.config();
 
 const logger = require('./utils/logger');
 const errorHandler = require('./middleware/errorHandler.middleware');
+const { sequelize } = require('./db/models');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -69,6 +70,32 @@ app.use((req, res, next) => {
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-    console.log(PORT, `Server is running on port: ${PORT}`);
-});
+// Database connection and server startup
+async function startServer() {
+    try {
+        await sequelize.authenticate();
+        logger.info('Database connection has been established successfully.');
+
+        const server = app.listen(PORT, () => {
+            logger.info(`Server running on port ${PORT}`);
+            logger.info(`Environment: ${process.env.NODE_ENV}`);
+        });
+        // Graceful shutdown
+        process.on('SIGTERM', () => {
+            logger.info('SIGTERM received, shutting down gracefully');
+            server.close(() => {
+                logger.info('Process terminated');
+                sequelize.close();
+            });
+        });
+    } catch (error) {
+        console.error('Unable to start server:', error);
+        process.exit(1);
+    }
+}
+
+if (require.main === module) {
+    startServer();
+}
+
+module.exports = app;
