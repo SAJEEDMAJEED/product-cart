@@ -25,8 +25,20 @@ services:
     networks:
       - app-network
 
+  redis:
+    image: redis:7-alpine
+    container_name: redis_container
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+
 volumes:
   pg_data:
+  redis_data:
 
 networks:
   app-network:

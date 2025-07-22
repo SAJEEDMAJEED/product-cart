@@ -3,7 +3,7 @@ const { z } = require('zod');
 const UserSchemas = {
     // For creating a user
     create: z.object({
-        email: z.email({ message: 'Invalid email address' })
+        email: z.string().email({ message: 'Invalid email address' })
             .max(255, { message: 'Email must be at most 255 characters' }),
         password: z.string()
             .min(6, { message: 'Password must be at least 6 characters long' })
