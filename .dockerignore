@@ -1,0 +1,64 @@
+# .dockerignore
+### Node ###
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+### Environment ###
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+### IDE ###
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+### Test ###
+coverage/
+*.lcov
+
+### Development ###
+dist/
+build/
+.DS_Store
+*.seed.js
+*.bak
+
+### Documentation ###
+*.md
+!README.md
+docs/*.pdf
+
+### Special Files ###
+docker-compose.override.yml
+docker-compose.debug.yml
+
+### Git ###
+.git/
+.gitignore
+.gitattributes
+
+### Database ###
+*.sqlite
+*.sql
+*.dump
+
+### Insomnia ###
+insomnia.*
+*.insomnia
+
+### Exception - Keep these ###
+!package.json
+!package-lock.json
+!yarn.lock
+!pnpm-lock.yaml
+!docs/cart.yaml  # Keep the API spec file
