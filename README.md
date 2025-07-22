@@ -124,3 +124,59 @@ Redis caching
 Role-based access control
 The API endpoints match your Insomnia collection exactly, making it easy to test and develop against.
 New chat
+
+
+# 🛒 Product-Cart API
+
+This is a Node.js backend for a Product & Cart Management System with Role-Based Access Control (RBAC).  
+Built as part of the **Leapcodes Machine Test**.
+
+---
+
+## 🧑‍💻 Tech Stack
+
+- **Backend**: Node.js + Express
+- **Database**: PostgreSQL + Sequelize ORM
+- **Auth**: JWT + bcrypt
+- **RBAC Roles**: `superAdmin`, `admin`, `user`
+
+---
+
+## ⚙️ Features
+
+✅ JWT Authentication  
+✅ Secure password hashing (bcrypt)  
+✅ Role-Based Access Control:
+| Role        | Permissions                                        |
+|-------------|-----------------------------------------------------|
+| superAdmin  | Full CRUD on Products, Create Admins               |
+| admin       | Create, Read, Update Products (No Delete)          |
+| user        | Manage own cart (add, update, remove, view items)  |
+
+✅ Product CRUD API  
+✅ User-specific Cart API  
+✅ Sequelize migrations included  
+
+---
+
+## 🚀 Getting Started
+
+### 📦 Backend Setup
+
+```bash
+# Clone the repo
+git clone https://github.com/SAJEEDMAJEED/product-cart.git
+cd product-cart/backend
+
+# Install dependencies
+npm install
+
+# Copy env file and configure
+cp .env.example .env
+# Edit .env with your DB and JWT details
+
+# Setup database
+npx sequelize db:migrate
+
+# Start the server
+npm run dev
