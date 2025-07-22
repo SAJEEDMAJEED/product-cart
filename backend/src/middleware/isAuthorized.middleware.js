@@ -1,13 +1,20 @@
 module.exports = (allowedRoles = []) => {
-    return (req, res, next) => {
-        if (!req.user) {
-            return res.status(401).json({ message: 'Unauthorized: No user logged in' });
-        }
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        status: 401,
+        message: 'Unauthorized: No user logged in',
+      });
+    }
 
-        if (!allowedRoles.includes(req.user.role)) {
-            return res.status(403).json({ message: 'Forbidden: Insufficient permissions' });
-        }
-
-        next();
-    };
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({
+        success: false,
+        status: 403,
+        message: 'Forbidden: Insufficient permissions',
+      });
+    }
+    next();
+  };
 };
